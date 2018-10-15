@@ -16,6 +16,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implements MethodProcessor {
 
     private ChannelHandlerContext context;
+    private CountDownLatch        contextCountDownLatch = new CountDownLatch(1);
     private CountDownLatch        countDownLatch = new CountDownLatch(1);
     /**
      * 入参
@@ -34,6 +35,7 @@ public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implemen
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.context = ctx;
+        contextCountDownLatch.countDown();
     }
 
     /**
@@ -54,6 +56,7 @@ public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implemen
      * @throws InterruptedException
      */
     public String process() throws InterruptedException {
+        contextCountDownLatch.await();
         context.writeAndFlush(param);
         countDownLatch.await();
         return response;

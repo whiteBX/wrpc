@@ -1,13 +1,13 @@
 package org.white.wrpc.consumer;
 
+import org.white.wrpc.common.netty.NettyClient;
+import org.white.wrpc.consumer.balance.UrlHolder;
+import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
-
-import org.white.wrpc.common.netty.NettyClient;
-import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
-import org.white.wrpc.consumer.balance.UrlHolder;
 
 /**
  * <p></p >
@@ -20,7 +20,7 @@ public class RPCConsumer {
     /**
      * url处理器
      */
-    private UrlHolder   urlHolder   = new UrlHolder();
+    private UrlHolder urlHolder = new UrlHolder();
     /**
      * netty客户端
      */
@@ -28,6 +28,7 @@ public class RPCConsumer {
 
     /**
      * 远程调用
+     *
      * @param appCode
      * @param param
      * @return
@@ -47,14 +48,14 @@ public class RPCConsumer {
             String result = clientHandler.process();
             System.out.println(MessageFormat.format("调用服务器:{0},请求参数:{1},响应参数:{2}", serverIp, param, result));
             return result;
-        } catch (InterruptedException e) {
-            System.out.println("远程服务调用失败:" + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("远程服务调用失败:" + e);
             return "error";
         }
     }
 
     public Object proxy(Class<?> clazz, final String appCode) {
-        return Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz }, new InvocationHandler() {
+        return Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new InvocationHandler() {
             public String invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 String serverIp = urlHolder.getUrl(appCode);
                 RpcClientNettyHandler clientHandler = new RpcClientNettyHandler();

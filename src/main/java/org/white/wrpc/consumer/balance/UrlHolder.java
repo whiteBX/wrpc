@@ -1,10 +1,5 @@
 package org.white.wrpc.consumer.balance;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -12,6 +7,11 @@ import org.apache.zookeeper.ZooKeeper;
 import org.white.wrpc.common.constant.CommonConstant;
 import org.white.wrpc.common.zk.ZKClient;
 import org.white.wrpc.consumer.constant.ConsumerConstant;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * <p></p >
@@ -23,14 +23,15 @@ public class UrlHolder {
     /**
      * url列表
      */
-    private List<String> urlList  = new ArrayList<String>();
+    private List<String> urlList = new ArrayList<String>();
     /**
      * zk客户端
      */
-    private ZKClient     zkClient = new ZKClient();
+    private ZKClient zkClient = new ZKClient();
 
     /**
      * 获取URL
+     *
      * @param appCode
      * @return
      */
@@ -41,7 +42,7 @@ public class UrlHolder {
         }
         // 随机返回一条,此处以后优化为负载均衡策略
         if (urlList.size() > 0) {
-            return urlList.get(new Random(urlList.size()).nextInt());
+            return urlList.get(new Random().nextInt(urlList.size()));
         } else {
             System.out.println("目前没有服务提供者");
             return null;
@@ -50,27 +51,29 @@ public class UrlHolder {
 
     /**
      * 初始化urlList
+     *
      * @param appCode
      */
     private void initUrlList(final String appCode) {
         try {
             // 获取zookeeper连接
             ZooKeeper zk = zkClient.newConnection(ConsumerConstant.ZK_CONNECTION_STRING,
-                ConsumerConstant.ZK_SESSION_TIME_OUT);
+                    ConsumerConstant.ZK_SESSION_TIME_OUT);
             // 获取目录下所有子节点
-            List<String> urlNodeList = zk.getChildren(
-                MessageFormat.format("{0}/{1}", CommonConstant.ZK_REGISTORY_ROOT_PATH, appCode), new Watcher() {
-                    public void process(WatchedEvent watchedEvent) {
-                        initUrlList(appCode);
-                    }
-                });
+            String appPath = MessageFormat.format("{0}/{1}", CommonConstant.ZK_REGISTORY_ROOT_PATH, appCode);
+            List<String> urlNodeList = zk.getChildren(appPath
+                    , new Watcher() {
+                        public void process(WatchedEvent watchedEvent) {
+                            initUrlList(appCode);
+                        }
+                    });
             if (CollectionUtils.isEmpty(urlNodeList)) {
                 return;
             }
             // 从子节点数据中解析出所有url
             List<String> urlList = new ArrayList<String>();
             for (String path : urlNodeList) {
-                byte[] url = zk.getData(path, new Watcher() {
+                byte[] url = zk.getData(appPath + "/" + path, new Watcher() {
                     public void process(WatchedEvent watchedEvent) {
                         initUrlList(appCode);
                     }
