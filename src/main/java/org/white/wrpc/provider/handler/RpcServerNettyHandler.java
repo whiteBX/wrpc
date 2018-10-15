@@ -1,4 +1,4 @@
-package org.white.wrpc.common.netty;
+package org.white.wrpc.provider.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

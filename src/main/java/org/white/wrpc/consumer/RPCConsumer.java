@@ -6,7 +6,7 @@ import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 
 import org.white.wrpc.common.netty.NettyClient;
-import org.white.wrpc.common.netty.RpcClientNettyHandler;
+import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
 import org.white.wrpc.consumer.balance.UrlHolder;
 
 /**

@@ -1,4 +1,4 @@
-package org.white.wrpc.common.netty;
+package org.white.wrpc.consumer.handler;
 
 import java.util.concurrent.CountDownLatch;
 
