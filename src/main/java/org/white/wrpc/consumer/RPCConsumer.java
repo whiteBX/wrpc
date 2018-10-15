@@ -12,8 +12,8 @@ import org.white.wrpc.consumer.balance.UrlHolder;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: RPCConsumer.java, v 0.1 2018年10月15日 17:46:00 baixiong Exp$
+ * @author white
+ * @version $Id: RPCConsumer.java, v 0.1 2018年10月15日 17:46:00 white Exp$
  */
 public class RPCConsumer {
 
@@ -34,11 +34,13 @@ public class RPCConsumer {
      */
     public String call(String appCode, String param) {
         try {
+            // 从zookeeper获取服务地址
             String serverIp = urlHolder.getUrl(appCode);
             if (serverIp == null) {
                 System.out.println("远程调用错误:当前无服务提供者");
                 return "connect error";
             }
+            // 连接netty,请求并接收响应
             RpcClientNettyHandler clientHandler = new RpcClientNettyHandler();
             clientHandler.setParam(param);
             nettyClient.initClient(serverIp, clientHandler);

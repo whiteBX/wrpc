@@ -7,10 +7,11 @@ import org.white.wrpc.common.zk.ZKClient;
 import org.white.wrpc.provider.constant.ProviderConstant;
 
 /**
- * <p> 1.创建netty监听,等待客户端连接 2.连接zk,创建临时节点,记录服务器连接信息 </p >
+ * <p> 1.创建netty监听,等待客户端连接
+ * 2.连接zk,创建临时节点,记录服务器连接信息 </p >
  *
- * @author baixiong
- * @version $Id: RPCProvider.java, v 0.1 2018年10月15日 17:42:00 baixiong Exp$
+ * @author white
+ * @version $Id: RPCProvider.java, v 0.1 2018年10月15日 17:42:00 white Exp$
  */
 public class RPCProvider {
     /**

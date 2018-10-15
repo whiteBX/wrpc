@@ -10,8 +10,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: RpcServerNettyHandler.java, v 0.1 2018年10月15日 11:18:00 baixiong Exp$
+ * @author white
+ * @version $Id: RpcServerNettyHandler.java, v 0.1 2018年10月15日 11:18:00 white Exp$
  */
 public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implements MethodProcessor {
 
@@ -26,17 +26,33 @@ public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implemen
      */
     private String                response;
 
+    /**
+     * 连上时触发
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.context = ctx;
     }
 
+    /**
+     * 获取服务器返回信息
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         response = msg.toString();
         countDownLatch.countDown();
     }
 
+    /**
+     * 远程调用并返回结果
+     * @return
+     * @throws InterruptedException
+     */
     public String process() throws InterruptedException {
         context.writeAndFlush(param);
         countDownLatch.await();

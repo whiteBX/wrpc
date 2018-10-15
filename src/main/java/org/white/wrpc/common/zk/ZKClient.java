@@ -2,18 +2,16 @@ package org.white.wrpc.common.zk;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.zookeeper.*;
 import org.white.wrpc.common.constant.CommonConstant;
-import org.white.wrpc.provider.constant.ProviderConstant;
 
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: ZKClient.java, v 0.1 2018年10月15日 09:50:00 baixiong Exp$
+ * @author white
+ * @version $Id: ZKClient.java, v 0.1 2018年10月15日 09:50:00 white Exp$
  */
 public class ZKClient {
 

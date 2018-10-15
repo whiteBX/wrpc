@@ -3,8 +3,8 @@ package org.white.wrpc.provider.constant;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: ProviderConstant.java, v 0.1 2018年10月15日 09:49:00 baixiong Exp$
+ * @author white
+ * @version $Id: ProviderConstant.java, v 0.1 2018年10月15日 09:49:00 white Exp$
  */
 public interface ProviderConstant {
     /**

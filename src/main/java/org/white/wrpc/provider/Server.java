@@ -3,8 +3,8 @@ package org.white.wrpc.provider;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: Server.java, v 0.1 2018年10月15日 09:48:00 baixiong Exp$
+ * @author white
+ * @version $Id: Server.java, v 0.1 2018年10月15日 09:48:00 white Exp$
  */
 public class Server {
 

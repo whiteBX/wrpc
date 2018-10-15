@@ -3,8 +3,8 @@ package org.white.wrpc.consumer.constant;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: ConsumerConstant.java, v 0.1 2018年10月15日 11:41:00 baixiong Exp$
+ * @author white
+ * @version $Id: ConsumerConstant.java, v 0.1 2018年10月15日 11:41:00 white Exp$
  */
 public interface ConsumerConstant {
     /**

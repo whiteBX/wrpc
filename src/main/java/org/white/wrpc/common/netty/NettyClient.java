@@ -17,8 +17,8 @@ import org.white.wrpc.provider.handler.RpcServerNettyHandler;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: NettyClient.java, v 0.1 2018年10月15日 11:03:00 baixiong Exp$
+ * @author white
+ * @version $Id: NettyClient.java, v 0.1 2018年10月15日 11:03:00 white Exp$
  */
 public class NettyClient {
 

@@ -16,8 +16,8 @@ import org.white.wrpc.consumer.constant.ConsumerConstant;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: UrlHolder.java, v 0.1 2018年10月15日 11:56:00 baixiong Exp$
+ * @author white
+ * @version $Id: UrlHolder.java, v 0.1 2018年10月15日 11:56:00 white Exp$
  */
 public class UrlHolder {
     /**
@@ -39,6 +39,7 @@ public class UrlHolder {
         if (urlList.size() == 0) {
             initUrlList(appCode);
         }
+        // 随机返回一条,此处以后优化为负载均衡策略
         if (urlList.size() > 0) {
             return urlList.get(new Random(urlList.size()).nextInt());
         } else {

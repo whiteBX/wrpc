@@ -3,8 +3,8 @@ package org.white.wrpc.common.constant;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: CommonConstant.java, v 0.1 2018年10月15日 14:16:00 baixiong Exp$
+ * @author white
+ * @version $Id: CommonConstant.java, v 0.1 2018年10月15日 14:16:00 white Exp$
  */
 public interface CommonConstant {
     /**

@@ -6,8 +6,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: RpcServerNettyHandler.java, v 0.1 2018年10月15日 11:18:00 baixiong Exp$
+ * @author white
+ * @version $Id: RpcServerNettyHandler.java, v 0.1 2018年10月15日 11:18:00 white Exp$
  */
 public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
 
