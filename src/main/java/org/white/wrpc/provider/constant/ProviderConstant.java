@@ -20,7 +20,7 @@ public interface ProviderConstant {
      */
     String APP_CODE             = "100000";
 
-    String DOLLAR_SPLIT         = "$";
+    String DOLLAR_SPLIT         = "\\$";
 
     String SHARP_SPLIT          = "#";
 }

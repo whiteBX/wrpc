@@ -3,8 +3,8 @@ package org.white.wrpc.hello.model.response;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: HelloResponse.java, v 0.1 2018年10月16日 14:59:00 baixiong Exp$
+ * @author white
+ * @version $Id: HelloResponse.java, v 0.1 2018年10月16日 14:59:00 white Exp$
  */
 public class HelloResponse {
 

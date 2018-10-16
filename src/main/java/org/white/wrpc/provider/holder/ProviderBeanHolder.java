@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: ProviderBeanHolder.java, v 0.1 2018年10月16日 15:39:00 baixiong Exp$
+ * @author white
+ * @version $Id: ProviderBeanHolder.java, v 0.1 2018年10月16日 15:39:00 white Exp$
  */
 public class ProviderBeanHolder {
 
@@ -23,6 +23,7 @@ public class ProviderBeanHolder {
      */
     public static void regist(String clazzName, Object obj) {
         providerList.put(clazzName, obj);
+        System.out.println("注册provider：" + clazzName);
     }
 
     /**

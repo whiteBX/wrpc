@@ -7,8 +7,8 @@ import org.white.wrpc.provider.RPCProvider;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: Provider.java, v 0.1 2018年10月16日 14:56:00 baixiong Exp$
+ * @author white
+ * @version $Id: Provider.java, v 0.1 2018年10月16日 14:56:00 white Exp$
  */
 public class Provider {
 

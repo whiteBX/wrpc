@@ -11,12 +11,12 @@ import com.alibaba.fastjson.JSON;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: Consumer.java, v 0.1 2018年10月16日 14:56:00 baixiong Exp$
+ * @author white
+ * @version $Id: Consumer.java, v 0.1 2018年10月16日 14:56:00 white Exp$
  */
 public class Consumer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         RPCConsumer consumer = new RPCConsumer();
         HelloService helloService = consumer.getBean(HelloService.class, ConsumerConstant.APP_CODE);
         int i = 0;
@@ -25,6 +25,7 @@ public class Consumer {
             request.setSeq(i++);
             HelloResponse helloResponse = helloService.hello(request);
             System.out.println("客户端收到响应:" + JSON.toJSONString(helloResponse));
+            Thread.sleep(Long.MAX_VALUE);
         }
     }
 }

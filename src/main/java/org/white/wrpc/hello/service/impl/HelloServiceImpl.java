@@ -7,8 +7,8 @@ import org.white.wrpc.hello.service.HelloService;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: HelloServiceImpl.java, v 0.1 2018年10月16日 14:20:00 baixiong Exp$
+ * @author white
+ * @version $Id: HelloServiceImpl.java, v 0.1 2018年10月16日 14:20:00 white Exp$
  */
 public class HelloServiceImpl implements HelloService {
 

@@ -37,7 +37,7 @@ public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
             // 请求响应
             ctx.writeAndFlush(JSON.toJSONString(response));
         } catch (Exception e) {
-            System.out.println("服务异常");
+            System.out.println("服务异常" + e);
         }
     }
 }
