@@ -1,13 +1,16 @@
 package org.white.wrpc.consumer;
 
-import org.white.wrpc.common.netty.NettyClient;
-import org.white.wrpc.consumer.balance.UrlHolder;
-import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
+
+import org.white.wrpc.common.netty.NettyClient;
+import org.white.wrpc.consumer.balance.UrlHolder;
+import org.white.wrpc.consumer.constant.ConsumerConstant;
+import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * <p></p >
@@ -20,7 +23,7 @@ public class RPCConsumer {
     /**
      * url处理器
      */
-    private UrlHolder urlHolder = new UrlHolder();
+    private UrlHolder   urlHolder   = new UrlHolder();
     /**
      * netty客户端
      */
@@ -54,14 +57,19 @@ public class RPCConsumer {
         }
     }
 
-    public Object proxy(Class<?> clazz, final String appCode) {
-        return Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new InvocationHandler() {
-            public String invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                String serverIp = urlHolder.getUrl(appCode);
-                RpcClientNettyHandler clientHandler = new RpcClientNettyHandler();
-                clientHandler.setParam(args[0].toString());
-                nettyClient.initClient(serverIp, clientHandler);
-                return clientHandler.process();
+    /**
+     * 获取代理类
+     * @param clazz
+     * @param appCode
+     * @return
+     */
+    public <T> T getBean(final Class<T> clazz, final String appCode) {
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz }, new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                String param = JSON.toJSONString(args[0]);
+                String beanMessage = MessageFormat.format(ConsumerConstant.BEAN_STRING, clazz.getName(),
+                    method.getName(), method.getParameterTypes()[0].getName());
+                return JSON.parseObject(call(appCode, beanMessage.concat(param)), method.getReturnType());
             }
         });
     }
