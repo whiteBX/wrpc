@@ -25,7 +25,7 @@ public class Consumer {
             request.setSeq(i++);
             HelloResponse helloResponse = helloService.hello(request);
             System.out.println("客户端收到响应:" + JSON.toJSONString(helloResponse));
-            Thread.sleep(Long.MAX_VALUE);
+            Thread.sleep(2000);
         }
     }
 }

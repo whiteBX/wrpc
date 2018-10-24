@@ -7,6 +7,7 @@ import org.apache.zookeeper.ZooKeeper;
 import org.white.wrpc.common.constant.CommonConstant;
 import org.white.wrpc.common.zk.ZKClient;
 import org.white.wrpc.consumer.constant.ConsumerConstant;
+import org.white.wrpc.consumer.enums.BalanceMode;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -28,6 +29,12 @@ public class UrlHolder {
      * zk客户端
      */
     private ZKClient zkClient = new ZKClient();
+    /**
+     * 负载上下文处理器
+     */
+    private BalanceContext balanceContext = new BalanceContext();
+    /** 负载模式，后续引入spring则从配置文件中读取 */
+    private static String balanceMode = "RANDOM";
 
     /**
      * 获取URL
@@ -42,7 +49,7 @@ public class UrlHolder {
         }
         // 随机返回一条,此处以后优化为负载均衡策略
         if (urlList.size() > 0) {
-            return urlList.get(new Random().nextInt(urlList.size()));
+            return balanceContext.getUrl(appCode, urlList, BalanceMode.valueOf(balanceMode));
         } else {
             System.out.println("目前没有服务提供者");
             return null;
