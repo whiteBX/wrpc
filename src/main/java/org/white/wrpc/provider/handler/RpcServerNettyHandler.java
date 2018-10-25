@@ -2,7 +2,10 @@ package org.white.wrpc.provider.handler;
 
 import java.lang.reflect.Method;
 
-import org.white.wrpc.provider.constant.ProviderConstant;
+import org.white.wrpc.common.holder.SpanHolder;
+import org.white.wrpc.common.model.BaseRequestBO;
+import org.white.wrpc.common.model.BaseResponseBO;
+import org.white.wrpc.common.model.Span;
 import org.white.wrpc.provider.holder.ProviderBeanHolder;
 
 import com.alibaba.fastjson.JSON;
@@ -23,21 +26,35 @@ public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
         System.out.println("服务端收到请求:" + msg);
         try {
             // 解析出 类名+方法名+请求参数类型(方法签名)
-            String[] splitParam = msg.toString().split(ProviderConstant.DOLLAR_SPLIT);
-            String[] beanMessage = splitParam[0].split(ProviderConstant.SHARP_SPLIT);
+            BaseRequestBO baseRequestBO = JSON.parseObject(msg.toString(), BaseRequestBO.class);
+            // 放入span
+            SpanHolder.put(baseRequestBO.getSpan());
             // 获取注册的服务
-            Object object = ProviderBeanHolder.getBean(beanMessage[0]);
+            Object object = ProviderBeanHolder.getBean(baseRequestBO.getClazzName());
             if (object == null) {
-                System.out.println("服务类未注册:" + beanMessage[0]);
+                System.out.println("服务类未注册:" + baseRequestBO.getClazzName());
             }
             // 通过反射调用服务
-            Class paramType = Class.forName(beanMessage[2]);
-            Method method = object.getClass().getDeclaredMethod(beanMessage[1], paramType);
-            Object response = method.invoke(object, JSON.parseObject(splitParam[1], paramType));
+            Class paramType = Class.forName(baseRequestBO.getParamTypeName());
+            Method method = object.getClass().getDeclaredMethod(baseRequestBO.getMethodName(), paramType);
+            Object response = method.invoke(object, JSON.parseObject(baseRequestBO.getData(), paramType));
             // 请求响应
-            ctx.writeAndFlush(JSON.toJSONString(response));
+            ctx.writeAndFlush(buildResponse(baseRequestBO.getSpan(), JSON.toJSONString(response)));
         } catch (Exception e) {
             System.out.println("服务异常" + e);
         }
+    }
+
+    /**
+     * 构造响应
+     * @param span
+     * @param response
+     * @return
+     */
+    private BaseResponseBO buildResponse(Span span, String response) {
+        BaseResponseBO baseResponseBO = new BaseResponseBO();
+        baseResponseBO.setSpan(span);
+        baseResponseBO.setResponse(response);
+        return baseResponseBO;
     }
 }

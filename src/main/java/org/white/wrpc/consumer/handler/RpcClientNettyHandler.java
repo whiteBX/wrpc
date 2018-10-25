@@ -46,6 +46,7 @@ public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implemen
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // TODO: 2018/10/25 处理span
         response = msg.toString();
         countDownLatch.countDown();
     }
