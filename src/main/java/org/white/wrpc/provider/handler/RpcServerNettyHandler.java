@@ -1,17 +1,16 @@
 package org.white.wrpc.provider.handler;
 
-import java.lang.reflect.Method;
-
-import org.white.wrpc.common.holder.SpanHolder;
-import org.white.wrpc.common.model.BaseRequestBO;
-import org.white.wrpc.common.model.BaseResponseBO;
-import org.white.wrpc.common.model.Span;
-import org.white.wrpc.provider.holder.ProviderBeanHolder;
-
 import com.alibaba.fastjson.JSON;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.white.wrpc.common.builder.SpanBuilder;
+import org.white.wrpc.common.holder.SpanHolder;
+import org.white.wrpc.common.model.BaseRequestBO;
+import org.white.wrpc.common.model.Span;
+import org.white.wrpc.provider.constant.ProviderConstant;
+import org.white.wrpc.provider.holder.ProviderBeanHolder;
+
+import java.lang.reflect.Method;
 
 /**
  * <p></p >
@@ -39,22 +38,12 @@ public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
             Method method = object.getClass().getDeclaredMethod(baseRequestBO.getMethodName(), paramType);
             Object response = method.invoke(object, JSON.parseObject(baseRequestBO.getData(), paramType));
             // 请求响应
-            ctx.writeAndFlush(buildResponse(baseRequestBO.getSpan(), JSON.toJSONString(response)));
+            ctx.writeAndFlush(JSON.toJSONString(response));
+            Span span = SpanBuilder.rebuildSpan(baseRequestBO.getSpan(), ProviderConstant.APP_CODE);
+            //// TODO: 2018/10/25 新启线程发起rpc调用远程链路追踪服务记录追踪日志 此处打日志代替
+            System.out.println("链路追踪，远程服务响应：" + JSON.toJSONString(span));
         } catch (Exception e) {
             System.out.println("服务异常" + e);
         }
-    }
-
-    /**
-     * 构造响应
-     * @param span
-     * @param response
-     * @return
-     */
-    private BaseResponseBO buildResponse(Span span, String response) {
-        BaseResponseBO baseResponseBO = new BaseResponseBO();
-        baseResponseBO.setSpan(span);
-        baseResponseBO.setResponse(response);
-        return baseResponseBO;
     }
 }

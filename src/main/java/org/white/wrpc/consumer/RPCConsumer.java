@@ -83,8 +83,9 @@ public class RPCConsumer {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 // 获取服务器地址
                 String serverHost = getServer(appCode);
-                Span span = SpanBuilder.buildSpan(SpanHolder.get(), method.getName(), serverHost, appCode);
-                //// TODO: 2018/10/25 新启线程发起rpc调用远程链路追踪服务记录追踪日志
+                Span span = SpanBuilder.buildNewSpan(SpanHolder.get(), method.getName(), serverHost, appCode);
+                //// TODO: 2018/10/25 新启线程发起rpc调用远程链路追踪服务记录追踪日志 此处打日志代替
+                System.out.println("链路追踪，调用远程服务：" + JSON.toJSONString(span));
                 BaseRequestBO baseRequestBO = buildBaseBO(span, clazz.getName(), method, JSON.toJSONString(args[0]));
                 return JSON.parseObject(call(serverHost, JSON.toJSONString(baseRequestBO)), method.getReturnType());
             }

@@ -1,11 +1,10 @@
 package org.white.wrpc.consumer.handler;
 
-import java.util.concurrent.CountDownLatch;
-
-import org.white.wrpc.consumer.processor.MethodProcessor;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.white.wrpc.consumer.processor.MethodProcessor;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * <p></p >
@@ -16,19 +15,20 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implements MethodProcessor {
 
     private ChannelHandlerContext context;
-    private CountDownLatch        contextCountDownLatch = new CountDownLatch(1);
-    private CountDownLatch        countDownLatch = new CountDownLatch(1);
+    private CountDownLatch contextCountDownLatch = new CountDownLatch(1);
+    private CountDownLatch countDownLatch = new CountDownLatch(1);
     /**
      * 入参
      */
-    private String                param;
+    private String param;
     /**
      * 响应
      */
-    private String                response;
+    private String response;
 
     /**
      * 连上时触发
+     *
      * @param ctx
      * @throws Exception
      */
@@ -40,19 +40,20 @@ public class RpcClientNettyHandler extends ChannelInboundHandlerAdapter implemen
 
     /**
      * 获取服务器返回信息
+     *
      * @param ctx
      * @param msg
      * @throws Exception
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        // TODO: 2018/10/25 处理span
         response = msg.toString();
         countDownLatch.countDown();
     }
 
     /**
      * 远程调用并返回结果
+     *
      * @return
      * @throws InterruptedException
      */

@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import org.white.wrpc.common.model.Span;
+import org.white.wrpc.common.utils.ShortUUIDUtils;
 
 /**
  * <p></p >
@@ -20,11 +21,11 @@ public class SpanBuilder {
      * @return
      * @throws UnknownHostException
      */
-    public static Span buildSpan(Span parentSpan, String operationName, String serverIp, String appCode) throws UnknownHostException {
+    public static Span buildNewSpan(Span parentSpan, String operationName, String serverIp, String appCode) throws UnknownHostException {
         Span span = new Span();
         span.setLocalIp(InetAddress.getLocalHost().getHostAddress());
         if (parentSpan == null) {
-            span.setTraceId(UUID.randomUUID().toString().replaceAll("-", ""));
+            span.setTraceId(ShortUUIDUtils.nextId());
             span.setParentSpanId("0");
         } else {
             span.setTraceId(parentSpan.getTraceId());
@@ -34,7 +35,20 @@ public class SpanBuilder {
         span.setOperationName(operationName);
         span.setRemoteIp(serverIp);
         span.setAppCode(appCode);
+        span.setSpanId(ShortUUIDUtils.nextId());
         return span;
+    }
+
+    /**
+     * 构建新的appCpde的Span
+     * @param span
+     * @param appCode
+     * @return
+     */
+    public static Span rebuildSpan(Span span, String appCode) {
+        Span newSpan = copy(span);
+        newSpan.setAppCode(appCode);
+        return newSpan;
     }
 
     /**
