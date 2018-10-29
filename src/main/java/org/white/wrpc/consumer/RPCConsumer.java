@@ -14,6 +14,7 @@ import org.white.wrpc.consumer.balance.UrlHolder;
 import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
 
 import com.alibaba.fastjson.JSON;
+import org.white.wrpc.consumer.limiter.ConsumerLimiter;
 
 /**
  * <p></p >
@@ -31,6 +32,10 @@ public class RPCConsumer {
      * netty客户端
      */
     private NettyClient nettyClient = new NettyClient();
+    /**
+     * 限流器
+     */
+    private ConsumerLimiter consumerLimiter = new ConsumerLimiter();
 
     /**
      * 远程调用
@@ -64,6 +69,11 @@ public class RPCConsumer {
      * @return
      */
     private String getServer(String appCode) {
+        // 限流
+        if (!consumerLimiter.limit(appCode)) {
+            System.out.println("请求被限流");
+            return null;
+        }
         // 从zookeeper获取服务地址
         String serverHost = urlHolder.getUrl(appCode);
         if (serverHost == null) {

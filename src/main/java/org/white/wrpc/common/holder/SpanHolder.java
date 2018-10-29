@@ -5,8 +5,8 @@ import org.white.wrpc.common.model.Span;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: SpanHolder.java, v 0.1 2018年10月25日 16:44:00 baixiong Exp$
+ * @author white
+ * @version $Id: SpanHolder.java, v 0.1 2018年10月25日 16:44:00 white Exp$
  */
 public class SpanHolder {
     /**

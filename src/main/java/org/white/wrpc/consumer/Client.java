@@ -1,6 +1,6 @@
 package org.white.wrpc.consumer;
 
-import org.white.wrpc.consumer.constant.ConsumerConstant;
+import org.white.wrpc.consumer.constant.ConsumerProperties;
 
 /**
  * <p> 1.从zk中读取appCode下的所有子节点数据,获取urlList 2.创建netty连接,执行远程调用 </p >
@@ -14,7 +14,7 @@ public class Client {
         RPCConsumer consumer = new RPCConsumer();
         int i = 0;
         while (true) {
-            consumer.call(ConsumerConstant.APP_CODE, "aaa" + i++);
+            consumer.call(ConsumerProperties.APP_CODE, "aaa" + i++);
             Thread.sleep(2000L);
         }
     }

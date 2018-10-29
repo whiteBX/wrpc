@@ -4,7 +4,7 @@ import org.apache.zookeeper.ZooKeeper;
 import org.white.wrpc.common.constant.CommonConstant;
 import org.white.wrpc.common.netty.NettyClient;
 import org.white.wrpc.common.zk.ZKClient;
-import org.white.wrpc.provider.constant.ProviderConstant;
+import org.white.wrpc.provider.constant.ProviderProperties;
 import org.white.wrpc.provider.holder.ProviderBeanHolder;
 
 /**
@@ -27,10 +27,10 @@ public class RPCProvider {
         // 开启netty监听客户端连接
         nettyClient.startServer(port);
         // 创建zk连接并创建临时节点
-        ZooKeeper zooKeeper = zkClient.newConnection(ProviderConstant.ZK_CONNECTION_STRING,
-            ProviderConstant.ZK_SESSION_TIME_OUT);
+        ZooKeeper zooKeeper = zkClient.newConnection(ProviderProperties.ZK_CONNECTION_STRING,
+            ProviderProperties.ZK_SESSION_TIME_OUT);
         String serverIp = server + CommonConstant.COMMOA + port;
-        zkClient.createEphemeralNode(zooKeeper, ProviderConstant.APP_CODE, serverIp.getBytes());
+        zkClient.createEphemeralNode(zooKeeper, ProviderProperties.APP_CODE, serverIp.getBytes());
     }
 
     /**

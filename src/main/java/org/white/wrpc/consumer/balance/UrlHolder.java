@@ -6,13 +6,12 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.white.wrpc.common.constant.CommonConstant;
 import org.white.wrpc.common.zk.ZKClient;
-import org.white.wrpc.consumer.constant.ConsumerConstant;
+import org.white.wrpc.consumer.constant.ConsumerProperties;
 import org.white.wrpc.consumer.enums.BalanceMode;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * <p></p >
@@ -64,8 +63,8 @@ public class UrlHolder {
     private void initUrlList(final String appCode) {
         try {
             // 获取zookeeper连接
-            ZooKeeper zk = zkClient.newConnection(ConsumerConstant.ZK_CONNECTION_STRING,
-                    ConsumerConstant.ZK_SESSION_TIME_OUT);
+            ZooKeeper zk = zkClient.newConnection(ConsumerProperties.ZK_CONNECTION_STRING,
+                    ConsumerProperties.ZK_SESSION_TIME_OUT);
             // 获取目录下所有子节点
             String appPath = MessageFormat.format("{0}/{1}", CommonConstant.ZK_REGISTORY_ROOT_PATH, appCode);
             List<String> urlNodeList = zk.getChildren(appPath

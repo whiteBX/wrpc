@@ -7,7 +7,7 @@ import org.white.wrpc.common.builder.SpanBuilder;
 import org.white.wrpc.common.holder.SpanHolder;
 import org.white.wrpc.common.model.BaseRequestBO;
 import org.white.wrpc.common.model.Span;
-import org.white.wrpc.provider.constant.ProviderConstant;
+import org.white.wrpc.provider.constant.ProviderProperties;
 import org.white.wrpc.provider.holder.ProviderBeanHolder;
 
 import java.lang.reflect.Method;
@@ -39,7 +39,7 @@ public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
             Object response = method.invoke(object, JSON.parseObject(baseRequestBO.getData(), paramType));
             // 请求响应
             ctx.writeAndFlush(JSON.toJSONString(response));
-            Span span = SpanBuilder.rebuildSpan(baseRequestBO.getSpan(), ProviderConstant.APP_CODE);
+            Span span = SpanBuilder.rebuildSpan(baseRequestBO.getSpan(), ProviderProperties.APP_CODE);
             //// TODO: 2018/10/25 新启线程发起rpc调用远程链路追踪服务记录追踪日志 此处打日志代替
             System.out.println("链路追踪，远程服务响应：" + JSON.toJSONString(span));
         } catch (Exception e) {

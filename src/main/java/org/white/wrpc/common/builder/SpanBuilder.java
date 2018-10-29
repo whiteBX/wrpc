@@ -10,8 +10,8 @@ import org.white.wrpc.common.utils.ShortUUIDUtils;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: SpanBuilder.java, v 0.1 2018年10月25日 16:33:00 baixiong Exp$
+ * @author white
+ * @version $Id: SpanBuilder.java, v 0.1 2018年10月25日 16:33:00 white Exp$
  */
 public class SpanBuilder {
 

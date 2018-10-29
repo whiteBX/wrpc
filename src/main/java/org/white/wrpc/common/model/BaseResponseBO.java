@@ -3,8 +3,8 @@ package org.white.wrpc.common.model;
 /**
  * <p></p >
  *
- * @author baixiong
- * @version $Id: BaseResponseBO.java, v 0.1 2018年10月25日 17:52:00 baixiong Exp$
+ * @author white
+ * @version $Id: BaseResponseBO.java, v 0.1 2018年10月25日 17:52:00 white Exp$
  */
 public class BaseResponseBO {
     /**

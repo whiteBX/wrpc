@@ -1,12 +1,12 @@
 package org.white.wrpc.provider.constant;
 
 /**
- * <p></p >
+ * <p>配置文件内容,此处直接通过常量代替</p >
  *
  * @author white
- * @version $Id: ProviderConstant.java, v 0.1 2018年10月15日 09:49:00 white Exp$
+ * @version $Id: ProviderProperties.java, v 0.1 2018年10月15日 09:49:00 white Exp$
  */
-public interface ProviderConstant {
+public interface ProviderProperties {
     /**
      * zookeeper连接串
      */
@@ -19,8 +19,4 @@ public interface ProviderConstant {
      * 服务唯一编码
      */
     String APP_CODE             = "100000";
-
-    String DOLLAR_SPLIT         = "\\$";
-
-    String SHARP_SPLIT          = "#";
 }
