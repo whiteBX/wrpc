@@ -30,7 +30,7 @@ public class ConsumerLimiter {
             rateLimiterMap.putIfAbsent(appCode, RateLimiter.create(1));
         }
         rateLimiter = rateLimiterMap.get(appCode);
-        // 默认等待1S
-        return rateLimiter.tryAcquire(1, TimeUnit.SECONDS);
+        // 默认等待500mS
+        return rateLimiter.tryAcquire(500, TimeUnit.NANOSECONDS);
     }
 }

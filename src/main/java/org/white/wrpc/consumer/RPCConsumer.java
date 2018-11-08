@@ -48,7 +48,7 @@ public class RPCConsumer {
         try {
             if (serverHost == null) {
                 System.out.println("远程调用错误:当前无服务提供者");
-                return "connect error";
+                return "{\"code\":404,\"message\":\"no provider\"}";
             }
             // 连接netty,请求并接收响应
             RpcClientNettyHandler clientHandler = new RpcClientNettyHandler();
