@@ -1,8 +1,7 @@
 package org.white.wrpc.common.model;
 
 /**
- * <p></p >
- *
+ * <p>链路追踪span定义</p >
  * @author white
  * @version $Id: Span.java, v 0.1 2018年10月25日 16:12:00 white Exp$
  */
@@ -10,35 +9,35 @@ public class Span {
     /**
      * 全局唯一id
      */
-    String traceId;
+    private String traceId;
     /**
      * 操作名--此处取方法名
      */
-    String operationName;
+    private String operationName;
     /**
      * 当前spanId
      */
-    String spanId;
+    private String spanId;
     /**
      * 调用方spanId
      */
-    String parentSpanId;
+    private String parentSpanId;
     /**
      * appCode
      */
-    String appCode;
+    private String appCode;
     /**
      * 当前机器ip
      */
-    String localIp;
+    private String localIp;
     /**
      * 目标机器ip
      */
-    String remoteIp;
+    private String remoteIp;
     /**
      * 时间戳
      */
-    long   timestamp;
+    private long   timestamp;
 
     public String getTraceId() {
         return traceId;
