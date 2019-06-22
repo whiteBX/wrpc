@@ -45,6 +45,7 @@ public class RpcServerNettyHandler extends ChannelInboundHandlerAdapter {
             System.out.println("链路追踪，远程服务响应：" + JSON.toJSONString(span));
         } catch (Exception e) {
             System.out.println("服务异常" + e);
+            ctx.writeAndFlush("exception").addListener(ChannelFutureListener.CLOSE);
         }
     }
 }

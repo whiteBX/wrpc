@@ -12,8 +12,12 @@ import org.white.wrpc.hello.service.HelloService;
  */
 public class HelloServiceImpl implements HelloService {
 
+    @Override
     public HelloResponse hello(HelloRequest request) {
         System.out.println("服务端收到请求,序列号:" + request.getSeq());
+        if (request.getSeq() < 0) {
+            throw new RuntimeException("seq error");
+        }
         HelloResponse response = new HelloResponse();
         response.setCode(200);
         response.setMessage("success:" + request.getSeq());

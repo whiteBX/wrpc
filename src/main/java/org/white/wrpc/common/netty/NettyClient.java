@@ -48,12 +48,12 @@ public class NettyClient {
                 });
             ChannelFuture channelFuture = bootstrap.bind(port).sync();
             // 等待通信完成
-            channelFuture.channel().closeFuture().sync();
+//            channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             System.out.println("netty创建服务端channel失败:" + e.getMessage());
         } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+//            bossGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
         }
     }
 
@@ -81,11 +81,11 @@ public class NettyClient {
                     }
                 });
             ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
-            channelFuture.channel().closeFuture().sync();
+//            channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             System.out.println("netty创建客户端channel失败:" + e);
         } finally {
-            workerGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
         }
     }
 }

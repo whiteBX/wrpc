@@ -1,20 +1,17 @@
 package org.white.wrpc.consumer;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.text.MessageFormat;
-
+import com.alibaba.fastjson.JSON;
 import org.white.wrpc.common.builder.SpanBuilder;
+import org.white.wrpc.common.circuit.CircuitUtil;
 import org.white.wrpc.common.holder.SpanHolder;
 import org.white.wrpc.common.model.BaseRequestBO;
 import org.white.wrpc.common.model.Span;
-import org.white.wrpc.common.netty.NettyClient;
 import org.white.wrpc.consumer.balance.UrlHolder;
-import org.white.wrpc.consumer.handler.RpcClientNettyHandler;
-
-import com.alibaba.fastjson.JSON;
 import org.white.wrpc.consumer.limiter.ConsumerLimiter;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * <p></p >
@@ -27,44 +24,24 @@ public class RPCConsumer {
     /**
      * url处理器
      */
-    private UrlHolder   urlHolder   = new UrlHolder();
+    private UrlHolder urlHolder = new UrlHolder();
     /**
-     * netty客户端
+     * 远程调用
      */
-    private NettyClient nettyClient = new NettyClient();
+    private RemoteCaller remoteCaller = new RemoteCaller();
     /**
      * 限流器
      */
     private ConsumerLimiter consumerLimiter = new ConsumerLimiter();
-
     /**
-     * 远程调用
-     *
-     * @param serverHost
-     * @param param
-     * @return
+     * 熔断器
      */
-    public String call(String serverHost, String param) {
-        try {
-            if (serverHost == null) {
-                System.out.println("远程调用错误:当前无服务提供者");
-                return "{\"code\":404,\"message\":\"no provider\"}";
-            }
-            // 连接netty,请求并接收响应
-            RpcClientNettyHandler clientHandler = new RpcClientNettyHandler();
-            clientHandler.setParam(param);
-            nettyClient.initClient(serverHost, clientHandler);
-            String result = clientHandler.process();
-            System.out.println(MessageFormat.format("调用服务器:{0},请求参数:{1},响应参数:{2}", serverHost, param, result));
-            return result;
-        } catch (Exception e) {
-            System.out.println("远程服务调用失败:" + e);
-            return "error";
-        }
-    }
+    private CircuitUtil circuitUtil = new CircuitUtil();
+
 
     /**
      * 获取服务
+     *
      * @param appCode
      * @return
      */
@@ -84,12 +61,13 @@ public class RPCConsumer {
 
     /**
      * 获取代理类
+     *
      * @param clazz
      * @param appCode
      * @return
      */
     public <T> T getBean(final Class<T> clazz, final String appCode) {
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz }, new InvocationHandler() {
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 // 获取服务器地址
                 String serverHost = getServer(appCode);
@@ -97,13 +75,15 @@ public class RPCConsumer {
                 //// TODO: 2018/10/25 新启线程发起rpc调用远程链路追踪服务记录追踪日志 此处打日志代替
                 System.out.println("链路追踪，调用远程服务：" + JSON.toJSONString(span));
                 BaseRequestBO baseRequestBO = buildBaseBO(span, clazz.getName(), method, JSON.toJSONString(args[0]));
-                return JSON.parseObject(call(serverHost, JSON.toJSONString(baseRequestBO)), method.getReturnType());
+                String result = circuitUtil.doCircuit(method.getName(), remoteCaller, serverHost, JSON.toJSONString(baseRequestBO));
+                return JSON.parseObject(result, method.getReturnType());
             }
         });
     }
 
     /**
      * 构造传输对象
+     *
      * @param span
      * @param clazzName
      * @param method

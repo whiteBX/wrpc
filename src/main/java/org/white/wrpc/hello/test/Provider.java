@@ -15,10 +15,10 @@ public class Provider {
     public static void main(String[] args) throws InterruptedException {
         RPCProvider provider = new RPCProvider();
         provider.registry("127.0.0.1", 8091);
-        provider.registry("127.0.0.1", 8092);
-        provider.registry("127.0.0.1", 8093);
-        provider.registry("127.0.0.1", 8094);
-        provider.registry("127.0.0.1", 8095);
+//        provider.registry("127.0.0.1", 8092);
+//        provider.registry("127.0.0.1", 8093);
+//        provider.registry("127.0.0.1", 8094);
+//        provider.registry("127.0.0.1", 8095);
         provider.provide(HelloService.class, new HelloServiceImpl());
 
         Thread.sleep(Long.MAX_VALUE);
