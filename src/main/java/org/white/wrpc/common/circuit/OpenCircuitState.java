@@ -34,7 +34,7 @@ public class OpenCircuitState extends CircuitState{
         }
         // 已到半开时间,改为半开状态,通过一个请求
         if (semaphore.tryAcquire()) {
-            this.context.setState(new HalfOpenCircuitState(), operation);
+            this.context.transferState(new HalfOpenCircuitState(), operation);
             semaphore.release();
             return true;
         }

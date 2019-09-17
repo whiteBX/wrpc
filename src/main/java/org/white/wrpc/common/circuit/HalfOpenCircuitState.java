@@ -25,13 +25,13 @@ public class HalfOpenCircuitState extends CircuitState {
 
     @Override
     void markSuccess(Map<String, Pair<AtomicInteger, AtomicInteger>> counter, String operation) {
-        this.context.setState(new CloseCircuitState(), operation);
+        this.context.transferState(new CloseCircuitState(), operation);
         counter.put(operation, new Pair<>(new AtomicInteger(), new AtomicInteger()));
     }
 
     @Override
     void markFail(Map<String, Pair<AtomicInteger, AtomicInteger>> counter, String operation) {
-        this.context.setState(new OpenCircuitState(System.currentTimeMillis()), operation);
+        this.context.transferState(new OpenCircuitState(System.currentTimeMillis()), operation);
     }
 
 }

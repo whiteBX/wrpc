@@ -17,28 +17,20 @@ public class CircuitContext {
 
     // 达到默认请求基数才判断开启熔断
     protected static final int DEFAULT_FAIL_COUNT = 5;
-    // 半开转换为全开时间
-    protected static final long DEFAULT_HALF_OPEN_TRANSFER_TIME = 10000;
     // 默认失败比例值开启熔断
     protected static final double DEFAULT_FAIL_RATE = 0.8D;
+    // 半开转换为全开时间
+    protected static final long DEFAULT_HALF_OPEN_TRANSFER_TIME = 10000;
     // 计数 pair左边成功,右边失败
     protected volatile Map<String, Pair<AtomicInteger, AtomicInteger>> counter = new ConcurrentHashMap<>();
+    // 每个operation对应的状态
     private volatile Map<String, CircuitState> state = new ConcurrentHashMap<>();
 
-    public CircuitState getState(String operation) {
-        if (this.state.get(operation) == null) {
-            CircuitState state = new CloseCircuitState();
-            state.setContext(this);
-            this.state.put(operation, state);
-        }
-        return this.state.get(operation);
-    }
-
-    public void setState(CircuitState state, String operation) {
-        state.setContext(this);
-        this.state.put(operation, state);
-    }
-
+    /**
+     * 判断该次请求是否可以通过
+     * @param operation
+     * @return
+     */
     public boolean canRequest(String operation) {
         return getState(operation).canRequest(operation);
     }
@@ -71,5 +63,19 @@ public class CircuitContext {
             counter.put(operation, new Pair<>(new AtomicInteger(), new AtomicInteger()));
         }
         this.getState(operation).markFail(counter, operation);
+    }
+
+    public CircuitState getState(String operation) {
+        if (this.state.get(operation) == null) {
+            CircuitState state = new CloseCircuitState();
+            state.setContext(this);
+            this.state.put(operation, state);
+        }
+        return this.state.get(operation);
+    }
+
+    public void transferState(CircuitState state, String operation) {
+        state.setContext(this);
+        this.state.put(operation, state);
     }
 }

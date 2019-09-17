@@ -36,7 +36,7 @@ public class CloseCircuitState extends CircuitState {
         int totalCount = failCount + successCount;
         double failRate = (double) failCount / (double) totalCount;
         if (totalCount >= this.context.DEFAULT_FAIL_COUNT && failRate > this.context.DEFAULT_FAIL_RATE) {
-            this.context.setState(new OpenCircuitState(System.currentTimeMillis()), operation);
+            this.context.transferState(new OpenCircuitState(System.currentTimeMillis()), operation);
         }
     }
 }
